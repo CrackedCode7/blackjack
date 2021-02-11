@@ -1,8 +1,8 @@
 from random import shuffle
 import os
-import tkinter as tk
-from tkinter import ttk
-from tkinter import filedialog
+#import tkinter as tk
+#from tkinter import ttk
+#from tkinter import filedialog
 
 def clear_screen():
   _ = os.system("clear")
@@ -68,12 +68,15 @@ def hand(deck):
   dealer_blackjack = False
   
   for i in range(2):
-
     player.append(deck[0])
     deck.pop(0)
 
     dealer.append(deck[0])
     deck.pop(0)
+
+  for card in dealer:
+    if card[0] == "Ace":
+      insurance = input("Insurance? (y/n)")
 
   player_scores = determine_score(player)
   dealer_scores = determine_score(dealer)
@@ -94,7 +97,10 @@ def hand(deck):
       turn_over = True
       break
     elif dealer_blackjack is True and score != 21:
-      print("Dealer has blackjack, you lose")
+      if insurance == "y" or insurance == "Y":
+        print("Dealer has blackjack, you lose 0.5x Bet with insurance")
+      elif insurance == "n" or insurance == "N":
+        print("Dealer has blackjack, you lose")
       game_over = True
       turn_over = True
       break
@@ -164,7 +170,7 @@ def hand(deck):
       player_best = score
   
   
-  if player_best > dealer_best:
+  if player_best > dealer_best or dealer_bust is True:
     print("Player wins!")
     print("You had:", player, "\n", player_best)
     print("Dealer had:", dealer, "\n", dealer_best)
@@ -178,8 +184,15 @@ def hand(deck):
     print("Dealer had:", dealer, "\n", dealer_best)
 
 # Code to run game
-clear_screen()
+while True:
 
-deck = create_deck()
+  clear_screen()
 
-hand(deck)
+  deck = create_deck()
+
+  hand(deck)
+
+  continue_playing = input("\nPress enter to continue or q to quit... ")
+  if continue_playing == "q" or continue_playing == "Q":
+    clear_screen()
+    break
