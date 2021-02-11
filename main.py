@@ -90,6 +90,11 @@ def hand(deck):
       game_over = True
       turn_over = True
       break
+    elif dealer_blackjack is True and score != 21:
+      print("Dealer has blackjack, you lose")
+      game_over = True
+      turn_over = True
+      break
     else:
       game_over = False
       turn_over = False
